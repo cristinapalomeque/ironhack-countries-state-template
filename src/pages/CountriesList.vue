@@ -16,13 +16,19 @@ ${el.alpha2Code.toLowerCase()}.png`"
 
 <script setup>
 import { ref } from "vue";
-
+import { useCountryStore } from "../stores/country";
+const countryStore = useCountryStore();
 const countries = ref(null);
 
 async function getCountries() {
   const res = await fetch("https://ih-countries-api.herokuapp.com/countries");
   const finalRes = await res.json();
   countries.value = finalRes;
+  countryStore.currentCountry = finalRes[0];
+}
+
+function showCountry(el) {
+  countryStore.currentCountry = el;
 }
 
 getCountries();
